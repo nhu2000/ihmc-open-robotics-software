@@ -68,24 +68,9 @@ import us.ihmc.humanoidRobotics.communication.packets.atlas.AtlasLowLevelControl
 import us.ihmc.humanoidRobotics.communication.packets.bdi.BDIBehaviorCommandPacket;
 import us.ihmc.humanoidRobotics.communication.packets.bdi.BDIBehaviorStatusPacket;
 import us.ihmc.humanoidRobotics.communication.packets.bdi.BDIRobotBehavior;
-import us.ihmc.humanoidRobotics.communication.packets.behaviors.BehaviorControlModePacket;
+import us.ihmc.humanoidRobotics.communication.packets.behaviors.*;
 import us.ihmc.humanoidRobotics.communication.packets.behaviors.BehaviorControlModePacket.BehaviorControlModeEnum;
-import us.ihmc.humanoidRobotics.communication.packets.behaviors.BehaviorControlModeResponsePacket;
-import us.ihmc.humanoidRobotics.communication.packets.behaviors.BehaviorStatusPacket;
 import us.ihmc.humanoidRobotics.communication.packets.behaviors.BehaviorStatusPacket.CurrentBehaviorStatus;
-import us.ihmc.humanoidRobotics.communication.packets.behaviors.ButtonData;
-import us.ihmc.humanoidRobotics.communication.packets.behaviors.DebrisData;
-import us.ihmc.humanoidRobotics.communication.packets.behaviors.DoorLocationPacket;
-import us.ihmc.humanoidRobotics.communication.packets.behaviors.DrillPacket;
-import us.ihmc.humanoidRobotics.communication.packets.behaviors.HumanoidBehaviorButtonPacket;
-import us.ihmc.humanoidRobotics.communication.packets.behaviors.HumanoidBehaviorDebrisPacket;
-import us.ihmc.humanoidRobotics.communication.packets.behaviors.HumanoidBehaviorType;
-import us.ihmc.humanoidRobotics.communication.packets.behaviors.HumanoidBehaviorTypePacket;
-import us.ihmc.humanoidRobotics.communication.packets.behaviors.SimpleCoactiveBehaviorDataPacket;
-import us.ihmc.humanoidRobotics.communication.packets.behaviors.ValveLocationPacket;
-import us.ihmc.humanoidRobotics.communication.packets.behaviors.WalkToGoalBehaviorPacket;
-import us.ihmc.humanoidRobotics.communication.packets.behaviors.WallPosePacket;
-import us.ihmc.humanoidRobotics.communication.packets.behaviors.WallTaskBehaviorData;
 import us.ihmc.humanoidRobotics.communication.packets.behaviors.script.ScriptBehaviorInputPacket;
 import us.ihmc.humanoidRobotics.communication.packets.behaviors.script.ScriptBehaviorStatusEnum;
 import us.ihmc.humanoidRobotics.communication.packets.behaviors.script.ScriptBehaviorStatusPacket;
@@ -510,6 +495,7 @@ public class IHMCCommunicationKryoNetClassList extends NetClassList
       registerPacketClass(DrillPacket.class);
       registerPacketClass(SimpleCoactiveBehaviorDataPacket.class);
       registerPacketClass(WallPosePacket.class);
+      registerPacketClass(WalkOverTerrainGoalPacket.class);
 
       registerPacketClass(DoorLocationPacket.class);
       registerPacketClass(ValveLocationPacket.class);

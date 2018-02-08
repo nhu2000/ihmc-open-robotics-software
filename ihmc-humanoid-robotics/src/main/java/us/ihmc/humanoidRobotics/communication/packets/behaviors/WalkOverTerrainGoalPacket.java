@@ -1,4 +1,4 @@
-package us.ihmc.humanoidBehaviors.behaviors.roughTerrain;
+package us.ihmc.humanoidRobotics.communication.packets.behaviors;
 
 import us.ihmc.communication.packets.Packet;
 import us.ihmc.euclid.referenceFrame.FramePose3D;
