@@ -35,8 +35,12 @@ public interface ICPOptimizationControllerInterface
    boolean useAngularMomentum();
    boolean useStepAdjustment();
 
-   void compute(double currentTime, FramePoint2DReadOnly desiredICP, FrameVector2DReadOnly desiredICPVelocity, FramePoint2DReadOnly perfectCMP,
-                FramePoint2DReadOnly currentICP, double omega0);
+   void compute(double currentTime, FramePoint2DReadOnly desiredICP, FrameVector2DReadOnly desiredICPVelocity,
+                FramePoint2DReadOnly desiredCoP, FramePoint2DReadOnly currentICP, FrameVector2DReadOnly currentICPVelocity, double omega0);
+
+   void compute(double currentTime, FramePoint2DReadOnly desiredICP, FrameVector2DReadOnly desiredICPVelocity,
+                FramePoint2DReadOnly desiredCoP, FrameVector2DReadOnly desiredCMPOffset,
+                FramePoint2DReadOnly currentICP, FrameVector2DReadOnly currentICPVelocity, double omega0);
 
    void submitRemainingTimeInSwingUnderDisturbance(double remainingTimeForSwing);
 

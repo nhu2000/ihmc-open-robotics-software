@@ -1,4 +1,4 @@
-package us.ihmc.commonWalkingControlModules.capturePoint.optimization.simpleController;
+package us.ihmc.commonWalkingControlModules.capturePoint.optimization;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,14 +8,13 @@ import org.junit.Test;
 
 import us.ihmc.commonWalkingControlModules.bipedSupportPolygons.BipedSupportPolygons;
 import us.ihmc.commonWalkingControlModules.bipedSupportPolygons.YoPlaneContactState;
-import us.ihmc.commonWalkingControlModules.capturePoint.optimization.ICPOptimizationController;
+import us.ihmc.commonWalkingControlModules.capturePoint.ICPControlGains;
+import us.ihmc.commonWalkingControlModules.capturePoint.ICPControlGainsReadOnly;
 import us.ihmc.commonWalkingControlModules.configurations.ICPAngularMomentumModifierParameters;
 import us.ihmc.commonWalkingControlModules.configurations.SteppingParameters;
 import us.ihmc.commonWalkingControlModules.configurations.SwingTrajectoryParameters;
 import us.ihmc.commonWalkingControlModules.configurations.ToeOffParameters;
 import us.ihmc.commonWalkingControlModules.configurations.WalkingControllerParameters;
-import us.ihmc.commonWalkingControlModules.capturePoint.ICPControlGains;
-import us.ihmc.commonWalkingControlModules.capturePoint.optimization.ICPOptimizationParameters;
 import us.ihmc.commonWalkingControlModules.momentumBasedController.optimization.MomentumOptimizationSettings;
 import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationPlan;
 import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationTest;
@@ -26,8 +25,8 @@ import us.ihmc.euclid.referenceFrame.FrameVector2D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.euclid.tuple2D.Point2D;
 import us.ihmc.humanoidRobotics.footstep.FootSpoof;
-import us.ihmc.robotics.controllers.pidGains.PIDSE3Gains;
 import us.ihmc.robotics.controllers.pidGains.implementations.PDGains;
+import us.ihmc.robotics.controllers.pidGains.implementations.PIDSE3Configuration;
 import us.ihmc.robotics.referenceFrames.MidFrameZUpFrame;
 import us.ihmc.robotics.referenceFrames.ZUpFrame;
 import us.ihmc.robotics.robotSide.RobotSide;
@@ -57,15 +56,13 @@ public class ICPOptimizationControllerTest
       TestICPOptimizationParameters optimizationParameters = new TestICPOptimizationParameters()
       {
          @Override
-         public double getFeedbackParallelGain()
+         public ICPControlGainsReadOnly getICPFeedbackGains()
          {
-            return feedbackGain;
-         }
+            ICPControlGains gains = new ICPControlGains();
+            gains.setKpParallelToMotion(feedbackGain);
+            gains.setKpOrthogonalToMotion(feedbackGain);
 
-         @Override
-         public double getFeedbackOrthogonalGain()
-         {
-            return feedbackGain;
+            return gains;
          }
 
          @Override
@@ -107,11 +104,12 @@ public class ICPOptimizationControllerTest
 
       FrameVector2D icpError = new FrameVector2D();
       FramePoint2D currentICP = new FramePoint2D();
+      FrameVector2D currentICPVelocity = new FrameVector2D();
       currentICP.set(desiredICP);
       currentICP.add(icpError);
 
       controller.initializeForStanding(0.0);
-      controller.compute(0.04, desiredICP, desiredICPVelocity, perfectCMP, currentICP, omega);
+      controller.compute(0.04, desiredICP, desiredICPVelocity, perfectCMP, currentICP, currentICPVelocity, omega);
 
       FramePoint2D desiredCMP = new FramePoint2D();
       controller.getDesiredCMP(desiredCMP);
@@ -129,15 +127,13 @@ public class ICPOptimizationControllerTest
       TestICPOptimizationParameters optimizationParameters = new TestICPOptimizationParameters()
       {
          @Override
-         public double getFeedbackParallelGain()
+         public ICPControlGainsReadOnly getICPFeedbackGains()
          {
-            return feedbackGain;
-         }
+            ICPControlGains gains = new ICPControlGains();
+            gains.setKpParallelToMotion(feedbackGain);
+            gains.setKpOrthogonalToMotion(feedbackGain);
 
-         @Override
-         public double getFeedbackOrthogonalGain()
-         {
-            return feedbackGain;
+            return gains;
          }
 
          @Override
@@ -179,11 +175,12 @@ public class ICPOptimizationControllerTest
 
       FrameVector2D icpError = new FrameVector2D();
       FramePoint2D currentICP = new FramePoint2D();
+      FrameVector2D currentICPVelocity = new FrameVector2D();
       currentICP.set(desiredICP);
       currentICP.add(icpError);
 
       controller.initializeForTransfer(0.0, RobotSide.LEFT, omega);
-      controller.compute(0.04, desiredICP, desiredICPVelocity, perfectCMP, currentICP, omega);
+      controller.compute(0.04, desiredICP, desiredICPVelocity, perfectCMP, currentICP, currentICPVelocity, omega);
 
       FramePoint2D desiredCMP = new FramePoint2D();
       controller.getDesiredCMP(desiredCMP);
@@ -201,15 +198,13 @@ public class ICPOptimizationControllerTest
       TestICPOptimizationParameters optimizationParameters = new TestICPOptimizationParameters()
       {
          @Override
-         public double getFeedbackParallelGain()
+         public ICPControlGainsReadOnly getICPFeedbackGains()
          {
-            return feedbackGain;
-         }
+            ICPControlGains gains = new ICPControlGains();
+            gains.setKpParallelToMotion(feedbackGain);
+            gains.setKpOrthogonalToMotion(feedbackGain);
 
-         @Override
-         public double getFeedbackOrthogonalGain()
-         {
-            return feedbackGain;
+            return gains;
          }
 
          @Override
@@ -250,11 +245,12 @@ public class ICPOptimizationControllerTest
 
       FrameVector2D icpError = new FrameVector2D(worldFrame, 0.03, 0.06);
       FramePoint2D currentICP = new FramePoint2D();
+      FrameVector2D currentICPVelocity = new FrameVector2D();
       currentICP.set(desiredICP);
       currentICP.add(icpError);
 
       controller.initializeForStanding(0.0);
-      controller.compute(0.04, desiredICP, desiredICPVelocity, perfectCMP, currentICP, omega);
+      controller.compute(0.04, desiredICP, desiredICPVelocity, perfectCMP, currentICP, currentICPVelocity, omega);
 
       FramePoint2D desiredCMP = new FramePoint2D();
       controller.getDesiredCMP(desiredCMP);
@@ -283,15 +279,12 @@ public class ICPOptimizationControllerTest
       TestICPOptimizationParameters optimizationParameters = new TestICPOptimizationParameters()
       {
          @Override
-         public double getFeedbackParallelGain()
+         public ICPControlGainsReadOnly getICPFeedbackGains()
          {
-            return feedbackGain;
-         }
-
-         @Override
-         public double getFeedbackOrthogonalGain()
-         {
-            return feedbackGain;
+            ICPControlGains gains = new ICPControlGains();
+            gains.setKpOrthogonalToMotion(feedbackGain);
+            gains.setKpParallelToMotion(feedbackGain);
+            return gains;
          }
 
          @Override
@@ -338,11 +331,12 @@ public class ICPOptimizationControllerTest
 
       FrameVector2D icpError = new FrameVector2D(worldFrame, 0.03, 0.06);
       FramePoint2D currentICP = new FramePoint2D();
+      FrameVector2D currentICPVelocity = new FrameVector2D();
       currentICP.set(desiredICP);
       currentICP.add(icpError);
 
       controller.initializeForStanding(0.0);
-      controller.compute(0.04, desiredICP, desiredICPVelocity, perfectCMP, currentICP, omega);
+      controller.compute(0.04, desiredICP, desiredICPVelocity, perfectCMP, currentICP, currentICPVelocity, omega);
 
       FramePoint2D desiredCMP = new FramePoint2D();
       controller.getDesiredCMP(desiredCMP);
@@ -454,17 +448,14 @@ public class ICPOptimizationControllerTest
       }
 
       @Override
-      public double getFeedbackParallelGain()
+      public ICPControlGainsReadOnly getICPFeedbackGains()
       {
-         return 3.0;
-      }
+         ICPControlGains gains = new ICPControlGains();
+         gains.setKpParallelToMotion(3.0);
+         gains.setKpOrthogonalToMotion(2.5);
 
-      @Override
-      public double getFeedbackOrthogonalGain()
-      {
-         return 2.5;
+         return gains;
       }
-
       @Override
       public double getDynamicsObjectiveWeight()
       {
@@ -602,19 +593,19 @@ public class ICPOptimizationControllerTest
       }
 
       @Override
-      public PIDSE3Gains getSwingFootControlGains()
+      public PIDSE3Configuration getSwingFootControlGains()
       {
          return null;
       }
 
       @Override
-      public PIDSE3Gains getHoldPositionFootControlGains()
+      public PIDSE3Configuration getHoldPositionFootControlGains()
       {
          return null;
       }
 
       @Override
-      public PIDSE3Gains getToeOffFootControlGains()
+      public PIDSE3Configuration getToeOffFootControlGains()
       {
          return null;
       }

@@ -3,30 +3,59 @@ package us.ihmc.commonWalkingControlModules.momentumBasedController.optimization
 import java.util.List;
 
 import us.ihmc.commonWalkingControlModules.configurations.GroupParameter;
-import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.euclid.tuple3D.interfaces.Vector3DReadOnly;
 
 public abstract class MomentumOptimizationSettings implements ControllerCoreOptimizationSettings
 {
-   public abstract Vector3D getLinearMomentumWeight();
-
-   public abstract Vector3D getHighLinearMomentumWeightForRecovery();
-
-   public abstract Vector3D getAngularMomentumWeight();
+   /**
+    * Note: This method does not need to be overwritten if the values for this parameter are loaded from XML.
+    */
+   public Vector3DReadOnly getLinearMomentumWeight()
+   {
+      return null;
+   }
 
    /**
+    * Note: This method does not need to be overwritten if the values for this parameter are loaded from XML.
+    */
+   public Vector3DReadOnly getHighLinearMomentumWeightForRecovery()
+   {
+      return null;
+   }
+
+   /**
+    * Note: This method does not need to be overwritten if the values for this parameter are loaded from XML.
+    */
+   public Vector3DReadOnly getAngularMomentumWeight()
+   {
+      return null;
+   }
+
+   /**
+    * Note: This method does not need to be overwritten if the values for this parameter are loaded from XML.
+    * <p>
     * Returns the optimization weight for the linear objective of the foot whenever the foot is
     * in support (loaded). When the foot is not loaded the default weight from
     * {@link #getTaskspaceLinearWeights()} will be used.
+    * </p>
     */
-   public abstract Vector3DReadOnly getLoadedFootLinearWeight();
+   public Vector3DReadOnly getLoadedFootLinearWeight()
+   {
+      return null;
+   }
 
    /**
+    * Note: This method does not need to be overwritten if the values for this parameter are loaded from XML.
+    * <p>
     * Returns the optimization weight for the angular objective of the foot whenever the foot is
     * in support (loaded).When the foot is not loaded the default weight from
     * {@link #getTaskspaceAngularWeights()} will be used.
+    * </p>
     */
-   public abstract Vector3DReadOnly getLoadedFootAngularWeight();
+   public Vector3DReadOnly getLoadedFootAngularWeight()
+   {
+      return null;
+   }
 
    /**
     * The map returned contains all optimization weights for jointspace objectives. The key of the map
